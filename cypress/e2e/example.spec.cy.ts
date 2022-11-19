@@ -10,6 +10,7 @@ describe('Alias problem reproduction', () => {
 
     cy.get('video').should('have.attr', 'src');
   });
+
   it('passes with other alias name', () => {
     cy.intercept(DEFAULT_VIDEO_URL, (request) => {
       request.redirect(OTHER_VIDEO_URL);
@@ -28,6 +29,15 @@ describe('Alias problem reproduction', () => {
     cy.visit('');
 
     // cy.wait('@video');
+
+    cy.get('video').should('have.attr', 'src');
+  });
+
+  it('passes when not modyfing request', () => {
+    cy.intercept(DEFAULT_VIDEO_URL).as('video');
+    cy.visit('');
+
+    cy.wait('@video');
 
     cy.get('video').should('have.attr', 'src');
   });
